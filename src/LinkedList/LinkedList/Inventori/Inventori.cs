@@ -12,25 +12,59 @@ public class Item
     }
 }
 
+public class ItemNode
+{
+    public Item Data { get; }
+    public ItemNode Next { get; set; }
+
+    public ItemNode(Item item)
+    {
+        Data = item;
+        Next = null;
+    }
+}
+
 public class ManajemenInventori
 {
-    private LinkedList<Item> inventori = new LinkedList<Item>();
+    private ItemNode head;
 
     public void TambahItem(Item item)
     {
-        inventori.AddLast(item);
+        var node = new ItemNode(item);
+        if (head == null)
+        {
+            head = node;
+        }
+        else
+        {
+            var current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = node;
+        }
     }
 
     public bool HapusItem(string nama)
     {
-        var current = inventori.First;
+        ItemNode current = head, prev = null;
+
         while (current != null)
         {
-            if (current.Value.Nama == nama)
+            if (current.Data.Nama == nama)
             {
-                inventori.Remove(current);
+                if (prev == null)
+                {
+                    head = current.Next;
+                }
+                else
+                {
+                    prev.Next = current.Next;
+                }
                 return true;
             }
+            prev = current;
             current = current.Next;
         }
         return false;
@@ -38,11 +72,15 @@ public class ManajemenInventori
 
     public string TampilkanInventori()
     {
+        ItemNode current = head;
         string result = "";
-        foreach (var item in inventori)
+
+        while (current != null)
         {
-            result += $"{item.Nama}; {item.Kuantitas}\n";
+            result += $"{current.Data.Nama}; {current.Data.Kuantitas}\n";
+            current = current.Next;
         }
+
         return result.TrimEnd();
     }
 }

@@ -28,6 +28,18 @@ public class KaryawanNode
     }
 }
 
+public class KaryawanResultNode
+{
+    public Karyawan Data { get; }
+    public KaryawanResultNode Next { get; set; }
+
+    public KaryawanResultNode(Karyawan karyawan)
+    {
+        Data = karyawan;
+        Next = null;
+    }
+}
+
 public class DaftarKaryawan
 {
     private KaryawanNode head;
@@ -74,18 +86,43 @@ public class DaftarKaryawan
 
     public Karyawan[] CariKaryawan(string kataKunci)
     {
-        var result = new List<Karyawan>();
+        KaryawanResultNode resultHead = null;
+        KaryawanResultNode resultTail = null;
+        int count = 0;
+
         var current = head;
         while (current != null)
         {
             if (current.Data.Nama.Contains(kataKunci, StringComparison.OrdinalIgnoreCase) ||
                 current.Data.Posisi.Contains(kataKunci, StringComparison.OrdinalIgnoreCase))
             {
-                result.Add(current.Data);
+                var resultNode = new KaryawanResultNode(current.Data);
+                if (resultHead == null)
+                {
+                    resultHead = resultTail = resultNode;
+                }
+                else
+                {
+                    resultTail.Next = resultNode;
+                    resultTail = resultNode;
+                }
+                count++;
             }
             current = current.Next;
         }
-        return result.ToArray();
+
+        var resultArray = new Karyawan[count];
+        current = head;
+        int index = 0;
+
+        var resultCurrent = resultHead;
+        while (resultCurrent != null)
+        {
+            resultArray[index++] = resultCurrent.Data;
+            resultCurrent = resultCurrent.Next;
+        }
+
+        return resultArray;
     }
 
     public string TampilkanDaftar()
