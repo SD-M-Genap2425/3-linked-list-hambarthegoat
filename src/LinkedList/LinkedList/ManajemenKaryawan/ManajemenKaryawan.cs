@@ -2,7 +2,6 @@
 
 public class Karyawan
 {
-    public string Name { get; set; }
     public string NomorKaryawan { get; }
     public string Nama { get; }
     public string Posisi { get; }
@@ -18,13 +17,12 @@ public class Karyawan
 public class KaryawanNode
 {
     public Karyawan Karyawan { get; set; }
-    public Karyawan Data { get; }
     public KaryawanNode Next { get; set; }
     public KaryawanNode Prev { get; set; }
 
     public KaryawanNode(Karyawan karyawan)
     {
-        Data = karyawan;
+        Karyawan = karyawan;
         Next = null;
         Prev = null;
     }
@@ -67,7 +65,7 @@ public class DaftarKaryawan
         var current = head;
         while (current != null)
         {
-            if (current.Data.NomorKaryawan == nomorKaryawan)
+            if (current.Karyawan.NomorKaryawan == nomorKaryawan) 
             {
                 if (current.Prev != null)
                     current.Prev.Next = current.Next;
@@ -95,10 +93,10 @@ public class DaftarKaryawan
         var current = head;
         while (current != null)
         {
-            if (current.Data.Nama.Contains(kataKunci, StringComparison.OrdinalIgnoreCase) ||
-                current.Data.Posisi.Contains(kataKunci, StringComparison.OrdinalIgnoreCase))
+            if (current.Karyawan.Nama.Contains(kataKunci, StringComparison.OrdinalIgnoreCase) || 
+                current.Karyawan.Posisi.Contains(kataKunci, StringComparison.OrdinalIgnoreCase)) 
             {
-                var resultNode = new KaryawanResultNode(current.Data);
+                var resultNode = new KaryawanResultNode(current.Karyawan); 
                 if (resultHead == null)
                 {
                     resultHead = resultTail = resultNode;
@@ -114,10 +112,9 @@ public class DaftarKaryawan
         }
 
         var resultArray = new Karyawan[count];
-        current = head;
+        var resultCurrent = resultHead;
         int index = 0;
 
-        var resultCurrent = resultHead;
         while (resultCurrent != null)
         {
             resultArray[index++] = resultCurrent.Data;
@@ -133,7 +130,7 @@ public class DaftarKaryawan
         string result = "";
         while (current != null)
         {
-            result += $"{current.Data.NomorKaryawan}; {current.Data.Nama}; {current.Data.Posisi}\n";
+            result += $"{current.Karyawan.NomorKaryawan}; {current.Karyawan.Nama}; {current.Karyawan.Posisi}\n"; 
             current = current.Prev;
         }
         return result.TrimEnd();
