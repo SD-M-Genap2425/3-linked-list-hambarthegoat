@@ -2,6 +2,7 @@
 
 public class Karyawan
 {
+    public string Name { get; set; }
     public string NomorKaryawan { get; }
     public string Nama { get; }
     public string Posisi { get; }
@@ -16,6 +17,7 @@ public class Karyawan
 
 public class KaryawanNode
 {
+    public Karyawan Karyawan { get; set; }
     public Karyawan Data { get; }
     public KaryawanNode Next { get; set; }
     public KaryawanNode Prev { get; set; }
